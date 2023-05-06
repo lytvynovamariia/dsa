@@ -47,6 +47,7 @@ public class Tree {
             String pos = "" + qu;  //create a string from a first element
             LinkedHashSet<String> set = new LinkedHashSet<String>(); //uses for deleting copy elements
             String[] help =  bool.split("\\+"); //make an array from boolean expression
+         //   HashMap<String, N>
             for(int i = 0; i < help.length; i++){
                 set.add(help[i]);
             }
@@ -164,7 +165,7 @@ public class Tree {
                 if (second.charAt(0) == '+')
                     second = second.substring(1, second.length());
             }
-            if(first != null && !first.isBlank()){
+        /*    if(first != null && !first.isBlank()){
                 help = first.split("\\+");
                 first = "";
                 set.clear();
@@ -179,7 +180,7 @@ public class Tree {
                 }
                 if(first != null && !first.isBlank())
                     first = first.substring(0, first.length()-1);
-            }
+            }  */
             level++;
             if (queue != "") {
                 if (hash_map.get(first+level) != null && hash_map.get(second+level) != null) {

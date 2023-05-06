@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args){
         Tree tree = new Tree();
-        BDD bdd = tree.create("L!M!N+XYZ+T", "LMNXYZT");
+        BDD bdd = tree.create("!ABCD+ABCD", "ABCD");
         tree.print();
         // V+YY+DQC  VYDQC
         // ABC+!AB!D+!BC+!BD   ABCD
