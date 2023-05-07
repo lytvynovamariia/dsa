@@ -9,13 +9,10 @@ public class Tree {
     String expression;
     String bool;
     private HashMap<String, Node> hash_map = new HashMap<>();
-    int num_red = 0;
     int number = 0;
     public BDD create(String bool, String queue){
         expression = queue;
         this.bool = bool;
-     //   HashTable table = new HashTable();
-       // root = create_help(root, bool, queue, table);
         root = create_help(root, bool, queue, 0);
         String[] str = bool.split("\\+");
         for(int i = 0; i < str.length; i++){
@@ -27,7 +24,6 @@ public class Tree {
         BDD bdd = new BDD(root, number, queue.length());
         return bdd;
     }
-    //private Node create_help(Node root, String bool, String queue, HashTable table){
         private Node create_help(Node root, String bool, String queue, int level){
         if(bool != null && !bool.isBlank() && queue != null && !queue.isBlank() && !bool.equals("1")
                 && !bool.equals("0") && !bool.equals("+")) { //check if we have a queue and boolean
@@ -39,21 +35,13 @@ public class Tree {
             root = hash_map.get(bool+level);
             if(root != null)
                 return root;
-
-      //      if (root == null) {
-
-              //  table.add(root.name, root.bo);
-          //  }
-
             String neg = "!" + qu; //create a string from a !first element in a queue
             String pos = "" + qu;  //create a string from a first element
             LinkedHashSet<String> set = new LinkedHashSet<String>(); //uses for deleting copy elements
             String[] help =  bool.split("\\+"); //make an array from boolean expression
-         //   HashMap<String, N>
             for(int i = 0; i < help.length; i++){
                 set.add(help[i]);
             }
-          //  System.out.println("SET " + set);
             help = new String[set.size()];
             help = set.toArray(help); //assign elements without duplicates
             String first = "";   //use this for recursion with negative expressions
@@ -95,7 +83,6 @@ public class Tree {
                             !queue.isBlank()) {
                         qu = queue.charAt(0);
                         root = new Node(qu, bool);
-                     //   table.add(root.name, root.bo);
                         neg = "!" + qu;
                         pos = "" + qu;
                         String[] arr_help = first.split("\\+");
@@ -141,20 +128,11 @@ public class Tree {
 
                 }
             }
-            //   root = table.search(queue.charAt(0), )
-            // System.out.println("\troot is " + root.name);
-            //     first = first.replace("0+", "");
-            //   first = first.replace("+0", "");
             first = first.replace("0", "");
-            //    second = second.replace("1+", "");
-            //  second = second.replace("+1", "");
             second = second.replace("1", "");
-
-
             root = new Node(qu, bool);
             hash_map.put(bool + level, root);
             number++;
-       //     table.add(root.name, root.bo, first, second, queue.charAt(0));
             if(first != null && !first.isBlank()){
                 if (first.contains("++"))
                     first = first.replace("++", "+");
@@ -167,34 +145,18 @@ public class Tree {
                 if (second.charAt(0) == '+')
                     second = second.substring(1, second.length());
             }
-        /*    if(first != null && !first.isBlank()){
-                help = first.split("\\+");
-                first = "";
-                set.clear();
-                for(int i = 0; i < help.length; i++){ //delete duplicates
-                    set.add(help[i]);
-                }
-                help = new String[set.size()];
-                help = set.toArray(help);
-                for(int i = 0; i < help.length; i++){ //add elements to the first
-                    first += help[i];
-                    first += "+";
-                }
-                if(first != null && !first.isBlank())
-                    first = first.substring(0, first.length()-1);
-            }  */
             level++;
             if (queue != "") {
                 if (hash_map.get(first+level) != null && hash_map.get(second+level) != null) {
-                    root.left = hash_map.get(first+(level+1));
-                    root.right = hash_map.get(second+(level+1));
+                    root.left = hash_map.get(first+level);
+                    root.right = hash_map.get(second+level);
                   //  num_red += (root.left.number + root.right.number);
                 }
                 else if(second.equals("") && hash_map.get(first+level) != null){
-                    root.left = hash_map.get(first+(level+1));
+                    root.left = hash_map.get(first+level);
                 }
                 else if(first.equals("") && hash_map.get(second+level) != null){
-                    root.right = hash_map.get(second+(level+1));
+                    root.right = hash_map.get(second+level);
                 }
                 else{
                     root.left = create_help(root.left, first, queue, level);
@@ -203,8 +165,6 @@ public class Tree {
 
             }
             else{
-              //  root.left = create_help(root.left, first, queue, table);
-              //  root.right = create_help(root.right, second, queue, table);
             root.left = create_help(root.left, first, queue, level+1);
             root.right = create_help(root.right, second, queue, level+1);
                 if (root.left != null && root.right != null) {
@@ -368,43 +328,11 @@ public class Tree {
 
                     root = root.left;
                 } else if (po == '1') {
-                 /*   if (poradie != null && !poradie.isBlank())
-                        poradie = poradie.substring(1, poradie.length());
-                    if (queue != null && !queue.isBlank())
-                        queue = queue.substring(1, queue.length()); */
                     root = root.right;
                 }
             }
             int result = root.name - '0';
             return result;
-
-          /*  while(i == 1) {
-                char qu = queue.charAt(0); //find first char at our queue
-                if (qu != root.name) { //if our char at queue dosen`t match the node`s name
-                    if (queue != null && !queue.isBlank() && poradie != null && !poradie.isBlank()) {
-                        queue = queue.substring(1, queue.length());
-                        poradie = poradie.substring(1, poradie.length());
-                    }
-                } else
-                    i = 0;
-            }
-
-            char po = ' ';
-            if(poradie != null && !poradie.isBlank() && queue != null && !queue.isBlank()) {
-                po = poradie.charAt(0);
-                poradie = poradie.substring(1, poradie.length());
-                queue = queue.substring(1, queue.length());
-            }
-            if(po == '0')
-                number = use_help(root.left, queue, poradie, number);
-            else
-                number = use_help(root.right, queue, poradie, number);
-        }
-        else {
-            number = root.name - '0';
-            return number;
-        }
-        return number; */
         }
         return 0;
     }

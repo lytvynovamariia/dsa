@@ -4,7 +4,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args){
         Tree tree = new Tree();
-        BDD bdd = tree.create("ABC!DEF+!ABC!D!E!F+AB!C!DEF+!AB!C!DEF+A!BC!D!EF+!AB!C!DEF", "ABCDEF");
+        BDD bdd = tree.create("!AB!F+!C!D+E!F+AGH+I!JK+L!M!N+XYZ+T", "ABCDEFGHIJKLMNXYZT");
         tree.print();
         // V+YY+DQC  VYDQC
         // ABC+!AB!D+!BC+!BD   ABCD
@@ -15,7 +15,7 @@ public class Main {
    //     int a = tree.BDD_use("1111");
      //   System.out.println(a);
         System.out.println("IT is BDD " + bdd.first + "  " + bdd.number + " " + bdd.num_var);
-        BDD_use("ABC!DEF+!ABC!D!E!F+AB!C!DEF+!AB!C!DEF+A!BC!D!EF+!AB!C!DEF", "ABCDEF", tree);
+        BDD_use("!AB!F+!C!D+E!F+AGH+I!JK+L!M!N+XYZ+T", "ABCDEFGHIJKLMNXYZT", tree);
     }
     private static void BDD_use(String bool, String queue, Tree tree){
         int b = queue.length();
@@ -33,20 +33,12 @@ public class Main {
             }
             binList.add(binStr);
         }
-
-// print the binary strings
-        //     for (String binStr : binList) {
-        //       System.out.println(binStr);
-        // }
-      //  String bool = "!ABCD+ABCD";
-        //String queue = "ABCD";
-        //  int h = 0;
-        String next = "111111";
+        //  String next = "111111";
         for(String binStr : binList){
             String[] help = bool.split("\\+");
             for(int i = 0; i < queue.length(); i++) { //replace all elements in bool
                 char copy = queue.charAt(i); //element in queue
-                char new_char = next.charAt(i);
+                char new_char = binStr.charAt(i);
                 String first = "!" + copy;
                 //    String second = "" + copy;
                 for(int k = 0; k < help.length; k++){ //replace elements
@@ -70,7 +62,7 @@ public class Main {
             }
             if(result != 0)
                 result = 1;
-            int a = tree.BDD_use(next);
+            int a = tree.BDD_use(binStr);
             if(a != result)
                 System.out.println("BDD BDDD BDD");
         }
