@@ -7,12 +7,14 @@ public class Tree {
     Node nula = new Node('0', "");
     Node jeden = new Node('1', "");
     String expression;
+    String bool;
     private HashMap<String, Node> hash_map = new HashMap<>();
     int num_red = 0;
     int number = 0;
     public BDD create(String bool, String queue){
         expression = queue;
-        HashTable table = new HashTable();
+        this.bool = bool;
+     //   HashTable table = new HashTable();
        // root = create_help(root, bool, queue, table);
         root = create_help(root, bool, queue, 0);
         String[] str = bool.split("\\+");
@@ -333,13 +335,50 @@ public class Tree {
         return root;
     }
     public int BDD_use(String queue){
-        int result = use_help(root, expression, queue, 0);
+        int result = use_help(root, expression, queue, bool);
         return result;
     }
-    private int use_help(Node root, String queue, String poradie, int number){
-        if(queue != null && !queue.isBlank() && poradie != null && !poradie.isBlank()){
-            int i = 1;
-            while(i == 1) {
+    private int use_help(Node root, String queue, String poradie, String bool) {
+        if (queue != null && !queue.isBlank() && poradie != null && !poradie.isBlank()) {
+            //poradie - 01001
+            //queue - ABCD
+            while (queue != null && !queue.isBlank() && poradie != null && !poradie.isBlank() && root != nula &&
+                    root != jeden) {
+                int i = 1;
+                char qu = queue.charAt(0);
+                char po = poradie.charAt(0);
+                if (poradie != null && !poradie.isBlank())
+                    poradie = poradie.substring(1, poradie.length());
+                if (queue != null && !queue.isBlank())
+                    queue = queue.substring(1, queue.length());
+                if (qu != root.name) {
+                    while (i == 1) {
+                        if (queue != null && !queue.isBlank() && poradie != null && !poradie.isBlank()) {
+                            qu = queue.charAt(0);
+                            po = poradie.charAt(0);
+                            queue = queue.substring(1, queue.length());
+                            poradie = poradie.substring(1, poradie.length());
+                            if (qu == root.name)
+                                i = 0;
+                        } else
+                            i = 0;
+                    }
+                }
+                if (po == '0') {
+
+                    root = root.left;
+                } else if (po == '1') {
+                 /*   if (poradie != null && !poradie.isBlank())
+                        poradie = poradie.substring(1, poradie.length());
+                    if (queue != null && !queue.isBlank())
+                        queue = queue.substring(1, queue.length()); */
+                    root = root.right;
+                }
+            }
+            int result = root.name - '0';
+            return result;
+
+          /*  while(i == 1) {
                 char qu = queue.charAt(0); //find first char at our queue
                 if (qu != root.name) { //if our char at queue dosen`t match the node`s name
                     if (queue != null && !queue.isBlank() && poradie != null && !poradie.isBlank()) {
@@ -365,7 +404,9 @@ public class Tree {
             number = root.name - '0';
             return number;
         }
-        return number;
+        return number; */
+        }
+        return 0;
     }
     public void print(){
         print_help(root);
